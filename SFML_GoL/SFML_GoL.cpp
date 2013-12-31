@@ -68,6 +68,8 @@ class ParticleEmitter : public sf::Drawable, public sf::Transformable
 {
 private:
 	struct Particle {
+		Particle() {}
+		Particle(const Particle& p) : velocity(p.velocity), lifetime(p.lifetime) {}
 		sf::Vector2f velocity;
 		sf::Time lifetime;
 	};
@@ -75,16 +77,7 @@ private:
 	std::vector<Particle> m_particles;
 	sf::VertexArray m_vertices;
 	sf::Time m_lifetime;
-	sf::Time m_life;
 	sf::Vector2f m_emitter;
-
-	void killParticle(std::size_t index)
-	{
-		m_particles[index].velocity = sf::Vector2f(0.0f, 0.0f);
-		m_particles[index].lifetime = sf::Time::Zero;
-
-		m_vertices[index].color.a = 0;
-	}
 
 	void resetParticle(std::size_t index)
 	{
@@ -110,7 +103,6 @@ public:
 	ParticleEmitter() :
 		m_particles(0),
 		m_vertices(sf::Points, 0),
-		m_life(sf::seconds(5)),
 		m_lifetime(sf::seconds(3)),
 		m_emitter(0, 0)
 	{
@@ -118,25 +110,10 @@ public:
 
 	ParticleEmitter(unsigned int count, sf::Vector2i pos) :
 		m_particles(count),
-		m_vertices(sf::Triangles, count),
-		m_life(sf::seconds(5)),
-		m_lifetime(sf::seconds(3)),
-		m_emitter(pos)
-	{
-	}
-
-	ParticleEmitter(unsigned int count, sf::Vector2i pos, sf::Time life) :
-		m_particles(count),
 		m_vertices(sf::Points, count),
-		m_life(life),
 		m_lifetime(sf::seconds(3)),
 		m_emitter(pos)
 	{
-	}
-
-	bool isActive()
-	{
-		return !(m_life <= sf::Time::Zero);
 	}
 
 	void update(sf::Time elapsed)
@@ -145,18 +122,10 @@ public:
 		{
 			Particle& p = m_particles[i];
 			p.lifetime -= elapsed;
-			m_life -= elapsed;
 
 			if (p.lifetime <= sf::Time::Zero) 
 			{
-				if (isActive()) 
-				{
-					resetParticle(i);
-				}
-				else
-				{
-					killParticle(i);
-				}
+				resetParticle(i);
 			}
 
 			m_vertices[i].position += p.velocity * elapsed.asSeconds();
@@ -227,7 +196,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				break;
 			case sf::Event::MouseButtonPressed:
 				click = sf::Vector2i(event.mouseButton.x, event.mouseButton.y);
-				psys.addEmitter(300, click);
+				psys.addEmitter(10000, click);
 				break;
 			}
 		}
