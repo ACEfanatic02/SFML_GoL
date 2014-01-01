@@ -136,14 +136,13 @@ public:
 	}
 };
 
-class ParticleSystem : public sf::Drawable, public sf::Transformable
+class ParticleSystem : public sf::Drawable
 {
 private:
 	std::vector<ParticleEmitter> m_emitters;
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
-		states.transform * getTransform();
 		for (std::size_t i = 0; i < m_emitters.size(); ++i)
 		{
 			target.draw(m_emitters[i], states);
@@ -183,7 +182,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	sf::Clock clock;
 	sf::Vector2i click;
-	
+
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -196,7 +195,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				break;
 			case sf::Event::MouseButtonPressed:
 				click = sf::Vector2i(event.mouseButton.x, event.mouseButton.y);
-				psys.addEmitter(10000, click);
+				psys.addEmitter(100000, click);
 				break;
 			}
 		}
