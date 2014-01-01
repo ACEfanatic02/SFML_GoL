@@ -6,64 +6,6 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 
-class TileMap : public sf::Drawable, public sf::Transformable
-{
-private:
-	sf::VertexArray m_vertices;
-	sf::Texture m_tileset;
-
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
-	{
-		states.transform *= getTransform();
-		states.texture = &m_tileset;
-
-		target.draw(m_vertices, states);
-	}
-
-public:
-
-	bool load(const std::string& tileset, sf::Vector2u tile_size, 
-		const int * tiles, unsigned int width, unsigned int height)
-	{
-		if (!m_tileset.loadFromFile(tileset))
-		{
-			return false;
-		}
-
-		m_vertices.setPrimitiveType(sf::Quads);
-		m_vertices.resize(width * height * 4);
-
-		// Number of tiles per row in tileset texture.
-		const int tileset_width = (m_tileset.getSize().x / tile_size.x);
-		
-		for (unsigned int i = 0; i < width; ++i)
-		{
-			for (unsigned int j = 0; j < height; ++j)
-			{
-				int tile_number = tiles[i + j * width];
-
-				int tu = tile_number % tileset_width;
-				int tv = tile_number / tileset_width;
-
-				sf::Vertex * quad = &m_vertices[(i + j * width) * 4];
-
-				quad[0].position = sf::Vector2f(i * tile_size.x, j * tile_size.y);
-				quad[1].position = sf::Vector2f((i + 1) * tile_size.x, j * tile_size.y);
-				quad[2].position = sf::Vector2f((i + 1) * tile_size.x, (j + 1) * tile_size.y);
-				quad[3].position = sf::Vector2f(i * tile_size.x, (j + 1) * tile_size.y);
-
-				quad[0].texCoords = sf::Vector2f(tu * tile_size.x, tv * tile_size.y);
-				quad[1].texCoords = sf::Vector2f((tu + 1) * tile_size.x, tv * tile_size.y);
-				quad[2].texCoords = sf::Vector2f((tu + 1) * tile_size.x, (tv + 1) * tile_size.y);
-				quad[3].texCoords = sf::Vector2f(tu * tile_size.x, (tv + 1) * tile_size.y);	
-			}
-		}
-
-		return true;
-	}
-};
-
-
 class ParticleEmitter : public sf::Drawable, public sf::Transformable
 {
 private:
