@@ -6,6 +6,8 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 
+#include "GameBoardRenderer.h"
+
 class ParticleEmitter : public sf::Drawable, public sf::Transformable
 {
 private:
@@ -118,7 +120,15 @@ public:
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	sf::RenderWindow window(sf::VideoMode(1024, 512), "Particles");
+	sf::RenderWindow window(sf::VideoMode(800, 800), "Game Of Life");
+
+	sf::Texture tiles;
+	if (!tiles.loadFromFile("tiles.png")) {
+		sf::err() << "Failed to load tileset texture." << std::endl;
+		return 1;
+	}
+
+	GameBoardRenderer board = GameBoardRenderer(sf::Vector2u(10, 10), sf::Vector2u(8, 8), tiles);
 
 	ParticleSystem psys;
 

@@ -21,6 +21,11 @@ private:
 	}
 
 public:
+	
+	typedef sf::Uint8 CellState;
+	static const CellState CELL_DEAD = 0;
+	static const CellState CELL_ALIVE = 1;
+
 	GameBoard(int width, int height) : 
 		m_width(width),
 		m_height(height),
@@ -34,11 +39,6 @@ public:
 		delete[] m_cells;
 		delete[] m_scratch;
 	}
-
-	enum CellState {
-		CELL_DEAD = 0,
-		CELL_ALIVE = 1,
-	};
 
 	int getWidth() const { return m_width; }
 	int getHeight() const { return m_height; }

@@ -12,7 +12,7 @@ void GameBoard::updateScratch()
 	for (int y = 0; y < m_height; ++y) {
 		dst += ((y + 1) * scratch_w + 1);
 		src += (y * m_width);
-		memcpy(dst, src, m_width);
+		memcpy(dst, src, m_width * sizeof(sf::Uint8));
 	}
 }
 
@@ -70,7 +70,7 @@ void GameBoard::update()
 GameBoard::CellState GameBoard::cellAt(int x, int y) const
 {
 	if (checkBounds(x, y)) {
-		return static_cast<GameBoard::CellState>(m_cells[y * m_width + x]);
+		return m_cells[y * m_width + x];
 	}
 	// TODO: there are other options here -- we can wrap the board, with cells on one edge neighboring their opposites.
 	return CELL_DEAD;
@@ -84,7 +84,7 @@ GameBoard::CellState GameBoard::cellAt(const sf::Vector2i& pos) const
 void GameBoard::setCell(int x, int y, GameBoard::CellState state)
 {
 	if (checkBounds(x, y)) {
-		m_cells[y * m_width + x] = static_cast<sf::Uint8>(state);
+		m_cells[y * m_width + x] = state;
 	}
 }
 

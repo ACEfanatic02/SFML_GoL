@@ -28,5 +28,6 @@ public:
 	}
 
 	void update();
+	void clickCell(const sf::Vector2i& pos);
 };
 

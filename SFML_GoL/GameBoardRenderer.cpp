@@ -33,3 +33,12 @@ void GameBoardRenderer::update()
 		}
 	}
 }
+
+void GameBoardRenderer::clickCell(const sf::Vector2i& pos)
+{
+	int tile_x = pos.x / m_cellsize.x;
+	int tile_y = pos.y / m_cellsize.y;
+	
+	int cur_state = m_board.cellAt(tile_x, tile_y);
+	m_board.setCell(tile_x, tile_y, (~cur_state) & 0x1); 
+}
