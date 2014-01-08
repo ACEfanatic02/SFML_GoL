@@ -10,9 +10,9 @@ void GameBoard::updateScratch()
 
 	// Copy src onto dst, leaving the border cells untouched.
 	for (int y = 0; y < m_height; ++y) {
-		dst += ((y + 1) * scratch_w + 1);
-		src += (y * m_width);
 		memcpy(dst, src, m_width * sizeof(sf::Uint8));
+		dst += (scratch_w + 1);
+		src += (m_width);
 	}
 }
 
@@ -32,9 +32,9 @@ void GameBoard::update()
 	sf::Uint8 * dst = m_cells;
 
 	// Cell array is stored in row-major format.  We setup and walk horizontally across each row.
-	for(int y = 0; y < m_height; ++y) {
-		scr += (y * scratch_w);
-		dst += (y * m_width);
+	for (int y = 0; y < m_height; ++y) {
+		scr = m_scratch + (y * scratch_w);
+		dst = m_cells + (y * m_width);
 
 		n = scr[0];				ne = scr[1];
 		c = scr[scratch_w];		e = scr[scratch_w + 1];
@@ -85,6 +85,11 @@ void GameBoard::setCell(int x, int y, GameBoard::CellState state)
 {
 	if (checkBounds(x, y)) {
 		m_cells[y * m_width + x] = state;
+	}
+	else {
+#ifdef DEBUG
+		sf::err() << "Invaild coordinates: setCell(" << x << ", " << y << ")" << std::endl;
+#endif
 	}
 }
 

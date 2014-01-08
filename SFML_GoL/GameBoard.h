@@ -32,6 +32,24 @@ public:
 		m_cells(new sf::Uint8[width * height]),
 		m_scratch(new sf::Uint8[(width + 2) * (height + 2)])
 	{
+		for (int x = 0; x < width; ++x) {
+			for (int y = 0; y < height; ++y) {
+				m_cells[y * width + x] = CELL_ALIVE;
+			}
+		}
+
+		for (int x = 0; x < (width + 2); ++x) {
+			for (int y = 0; y < (height + 2); ++y) {
+				m_scratch[y * (width + 2) + x] = CELL_DEAD;
+			}
+		}
+	}
+
+	GameBoard(const GameBoard& g) :
+		m_width(0), m_height(0), m_cells(nullptr), m_scratch(nullptr)
+	{
+		sf::err() << "GameBoard copied!!";
+		_ASSERT(false); 
 	}
 
 	~GameBoard()

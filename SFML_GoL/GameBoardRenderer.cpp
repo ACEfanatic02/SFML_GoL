@@ -2,13 +2,13 @@
 
 void GameBoardRenderer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	states.texture = &m_tex;
 	target.draw(m_verts, states);
 }
 
 void GameBoardRenderer::update()
 {
 	m_board.update();
-
 	const int tileset_width = m_tex.getSize().x / m_cellsize.x;
 	for (unsigned int i = 0; i < m_board.getWidth(); ++i)
 	{

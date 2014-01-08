@@ -104,6 +104,10 @@ public:
 	{
 	}
 
+	~ParticleSystem()
+	{
+	}
+
 	void addEmitter(unsigned int particles, sf::Vector2i pos)
 	{
 		m_emitters.push_back(ParticleEmitter(particles, pos));
@@ -120,6 +124,10 @@ public:
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+#ifdef DEBUG
+	_CrtSetDbgFlag(_CRTDBG_CHECK_ALWAYS_DF);
+#endif
+
 	sf::RenderWindow window(sf::VideoMode(800, 800), "Game Of Life");
 
 	sf::Texture tiles;
@@ -127,10 +135,9 @@ int _tmain(int argc, _TCHAR* argv[])
 		sf::err() << "Failed to load tileset texture." << std::endl;
 		return 1;
 	}
-
-	GameBoardRenderer board = GameBoardRenderer(sf::Vector2u(10, 10), sf::Vector2u(8, 8), tiles);
-
-	ParticleSystem psys;
+	
+	ParticleSystem psys(5);
+	GameBoardRenderer board(sf::Vector2u(100, 100), sf::Vector2u(8, 8), tiles);
 
 	sf::Clock clock;
 	sf::Vector2i click;
@@ -147,19 +154,20 @@ int _tmain(int argc, _TCHAR* argv[])
 				break;
 			case sf::Event::MouseButtonPressed:
 				click = sf::Vector2i(event.mouseButton.x, event.mouseButton.y);
-				psys.addEmitter(100000, click);
+				psys.addEmitter(1000, click);
 				break;
 			}
 		}
 		
 		sf::Time elapsed = clock.restart();
+		board.update();
 		psys.update(elapsed);
 
 		window.clear(sf::Color::Black);
+		window.draw(board);
 		window.draw(psys);
 		window.display();
 	}
-
 	return 0;
 }
 
