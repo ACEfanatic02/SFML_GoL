@@ -142,6 +142,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	sf::Clock clock;
 	sf::Vector2i click;
 
+	sf::View game_view(sf::Vector2f(400, 300), sf::Vector2f(800, 600));
+	game_view.setViewport(sf::FloatRect(0, 0, 1, 0.75));
+	window.setView(game_view);
+
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -168,9 +172,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				break;
 			case sf::Event::MouseButtonPressed:
 				click = sf::Vector2i(event.mouseButton.x, event.mouseButton.y);
-				//psys.addEmitter(1000, click);
 				board.clickCell(click);
-				//board.setSpeed(GameSpeed::SPEED_FAST);
 				break;
 			}
 		}
@@ -179,7 +181,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		board.update(elapsed);
 		psys.update(elapsed);
 
-		window.clear(sf::Color::Black);
+		window.clear(sf::Color::White);
 		window.draw(board);
 		window.draw(psys);
 		window.display();
