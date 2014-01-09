@@ -2,25 +2,23 @@
 
 void GameBoard::updateScratch()
 {
-	static const int scratch_w = m_width + 2;
-	static const int scratch_h = m_height + 2;
-
 	sf::Uint8 * src = m_cells;
 	sf::Uint8 * dst = m_scratch;
 
 	// Copy src onto dst, leaving the border cells untouched.
 	for (int y = 0; y < m_height; ++y) {
-		memcpy(dst, src, m_width * sizeof(sf::Uint8));
-		dst += (scratch_w + 1);
-		src += (m_width);
+		memcpy(dst + 1, src, m_width * sizeof(sf::Uint8));
+		dst += scratch_w;
+		src += m_width;
+		// TODO: 
+		// Possibly a more efficient method (fewer reads).  Needs profiling.
+		// dst = m_scratch + (y * scratch_w);
+		// src = m_cells + (y * m_width);
 	}
 }
 
 void GameBoard::update()
 {
-	static const int scratch_w = m_width + 2;
-	static const int scratch_h = m_height + 2;
-
 	updateScratch();
 
 	// Cell neighborhood. c maps to the current cell.

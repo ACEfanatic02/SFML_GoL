@@ -7,6 +7,8 @@ class GameBoard
 private:
 	const int m_width;
 	const int m_height;
+	const int scratch_w;
+	const int scratch_h;
 
 	// Current state of cells.
 	sf::Uint8 * const m_cells;
@@ -29,8 +31,10 @@ public:
 	GameBoard(int width, int height) : 
 		m_width(width),
 		m_height(height),
+		scratch_w(width+2),
+		scratch_h(height+2),
 		m_cells(new sf::Uint8[width * height]),
-		m_scratch(new sf::Uint8[(width + 2) * (height + 2)])
+		m_scratch(new sf::Uint8[scratch_w * scratch_h])
 	{
 		for (int x = 0; x < width; ++x) {
 			for (int y = 0; y < height; ++y) {
@@ -43,13 +47,6 @@ public:
 				m_scratch[y * (width + 2) + x] = CELL_DEAD;
 			}
 		}
-	}
-
-	GameBoard(const GameBoard& g) :
-		m_width(0), m_height(0), m_cells(nullptr), m_scratch(nullptr)
-	{
-		sf::err() << "GameBoard copied!!";
-		_ASSERT(false); 
 	}
 
 	~GameBoard()
