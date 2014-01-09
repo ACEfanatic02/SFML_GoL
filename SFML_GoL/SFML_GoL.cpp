@@ -152,21 +152,38 @@ int _tmain(int argc, _TCHAR* argv[])
 			case sf::Event::Closed:
 				window.close();
 				break;
+			case sf::Event::KeyPressed:
+				switch (event.key.code)
+				{
+				case sf::Keyboard::P:
+					board.setSpeed(GameSpeed::SPEED_PAUSED);
+					break;
+				case sf::Keyboard::Num1:
+					board.setSpeed(GameSpeed::SPEED_SLOW);
+					break;
+				case sf::Keyboard::Num2:
+					board.setSpeed(GameSpeed::SPEED_FAST);
+					break;
+				}
+				break;
 			case sf::Event::MouseButtonPressed:
 				click = sf::Vector2i(event.mouseButton.x, event.mouseButton.y);
-				psys.addEmitter(1000, click);
+				//psys.addEmitter(1000, click);
+				board.clickCell(click);
+				//board.setSpeed(GameSpeed::SPEED_FAST);
 				break;
 			}
 		}
 		
 		sf::Time elapsed = clock.restart();
-		board.update();
+		board.update(elapsed);
 		psys.update(elapsed);
 
 		window.clear(sf::Color::Black);
 		window.draw(board);
 		window.draw(psys);
 		window.display();
+		sf::sleep(sf::milliseconds(50) - elapsed);
 	}
 	return 0;
 }

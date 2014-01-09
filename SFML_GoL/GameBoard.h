@@ -38,7 +38,7 @@ public:
 	{
 		for (int x = 0; x < width; ++x) {
 			for (int y = 0; y < height; ++y) {
-				m_cells[y * width + x] = CELL_ALIVE;
+				m_cells[y * width + x] = CELL_DEAD;
 			}
 		}
 

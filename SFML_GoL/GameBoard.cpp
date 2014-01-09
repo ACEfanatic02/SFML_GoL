@@ -3,7 +3,7 @@
 void GameBoard::updateScratch()
 {
 	sf::Uint8 * src = m_cells;
-	sf::Uint8 * dst = m_scratch;
+	sf::Uint8 * dst = m_scratch + scratch_w;
 
 	// Copy src onto dst, leaving the border cells untouched.
 	for (int y = 0; y < m_height; ++y) {
@@ -15,6 +15,27 @@ void GameBoard::updateScratch()
 		// dst = m_scratch + (y * scratch_w);
 		// src = m_cells + (y * m_width);
 	}
+	// Copy edges
+	// Bottom->Top
+	memcpy(m_scratch + 1, m_cells + (m_width * (m_height - 1)), m_width * sizeof(sf::Uint8));
+	// Top->Bottom
+	memcpy(m_scratch + (scratch_w * (scratch_h - 1)) + 1, m_cells, m_width * sizeof(sf::Uint8));
+	for (int y = 0; y < m_height; ++y) {
+		// Left->Right
+		m_scratch[(y + 1) * scratch_w] = m_cells[(y * m_width) + (m_width - 1)];
+		// Right->Left
+		m_scratch[(y + 1) * scratch_w + (scratch_w - 1)] = m_cells[y * m_width];
+	}
+
+	// Corners
+	// SE->NW
+	m_scratch[0] = m_cells[m_width * m_height - 1];
+	// NW->SE
+	m_scratch[scratch_w * scratch_h - 1] = m_cells[0];
+	// SW->NE
+	m_scratch[scratch_w - 1] = m_cells[m_width * (m_height - 1)];
+	// NE->SW
+	m_scratch[scratch_w * (scratch_h - 1)] = m_cells[m_width - 1];
 }
 
 void GameBoard::update()

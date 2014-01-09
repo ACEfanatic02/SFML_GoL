@@ -6,9 +6,35 @@ void GameBoardRenderer::draw(sf::RenderTarget& target, sf::RenderStates states) 
 	target.draw(m_verts, states);
 }
 
-void GameBoardRenderer::update()
+namespace {
+	const sf::Time SLOW_TIMEOUT = sf::milliseconds(300);
+	const sf::Time FAST_TIMEOUT = sf::milliseconds(100);
+}
+
+bool GameBoardRenderer::checkUpdateTime(sf::Time elapsed)
 {
-	m_board.update();
+	m_time_since_update += elapsed;
+	if (m_speed == GameSpeed::SPEED_SLOW &&
+		m_time_since_update >= SLOW_TIMEOUT)
+	{
+		m_time_since_update = sf::Time::Zero;
+		return true;
+	}
+	else if (m_speed == GameSpeed::SPEED_FAST &&
+		m_time_since_update >= FAST_TIMEOUT)
+	{
+		m_time_since_update = sf::Time::Zero;
+		return true;
+	}
+	return false;
+}
+
+void GameBoardRenderer::update(sf::Time elapsed)
+{
+	if (m_speed != GameSpeed::SPEED_PAUSED && checkUpdateTime(elapsed))
+	{
+		m_board.update();
+	}
 	const int tileset_width = m_tex.getSize().x / m_cellsize.x;
 	for (unsigned int i = 0; i < m_board.getWidth(); ++i)
 	{

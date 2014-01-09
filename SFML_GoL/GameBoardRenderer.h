@@ -4,22 +4,35 @@
 
 #include "GameBoard.h"
 
+enum GameSpeed
+{
+	SPEED_PAUSED,
+	SPEED_SLOW,
+	SPEED_FAST,
+};
+
 class GameBoardRenderer : public sf::Drawable
 {
 private:
+	
 	GameBoard m_board;
 	const sf::Vector2u m_cellsize;
 	const sf::Texture& m_tex;
 	sf::VertexArray m_verts;
 
+	GameSpeed m_speed;
+	sf::Time m_time_since_update;
+
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	bool checkUpdateTime(sf::Time elapsed);
 
 public:
 	GameBoardRenderer(const sf::Vector2u& board_size, const sf::Vector2u& cellsize, const sf::Texture& texture) :
 		m_board(board_size.x, board_size.y),
 		m_cellsize(cellsize),
 		m_tex(texture),
-		m_verts(sf::Quads, board_size.x * board_size.y * 4)
+		m_verts(sf::Quads, board_size.x * board_size.y * 4),
+		m_speed(GameSpeed::SPEED_PAUSED)
 	{
 	}
 
@@ -27,7 +40,8 @@ public:
 	{
 	}
 
-	void update();
+	void update(const sf::Time elapsed);
 	void clickCell(const sf::Vector2i& pos);
+	void setSpeed(const GameSpeed speed) { m_speed = speed; }
 };
 
