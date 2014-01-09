@@ -159,6 +159,13 @@ int _tmain(int argc, _TCHAR* argv[])
 			case sf::Event::KeyPressed:
 				switch (event.key.code)
 				{
+				// Re-center view
+				case sf::Keyboard::C:
+					game_view.setCenter(sf::Vector2f(400, 300));
+					window.setView(game_view);
+					break;
+
+				// Change speed:
 				case sf::Keyboard::P:
 					board.setSpeed(GameSpeed::SPEED_PAUSED);
 					break;
@@ -172,7 +179,12 @@ int _tmain(int argc, _TCHAR* argv[])
 				break;
 			case sf::Event::MouseButtonPressed:
 				click = sf::Vector2i(event.mouseButton.x, event.mouseButton.y);
-				board.clickCell(click);
+				if (event.mouseButton.button == sf::Mouse::Button::Left) { 
+					board.clickCell(sf::Vector2i(window.mapPixelToCoords(click)));
+				} else if (event.mouseButton.button == sf::Mouse::Button::Right) {
+					game_view.setCenter(sf::Vector2f(click));
+					window.setView(game_view);
+				}
 				break;
 			}
 		}
@@ -181,7 +193,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		board.update(elapsed);
 		psys.update(elapsed);
 
-		window.clear(sf::Color::White);
+		window.clear(sf::Color::Blue);
 		window.draw(board);
 		window.draw(psys);
 		window.display();
