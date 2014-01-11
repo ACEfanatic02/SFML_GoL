@@ -186,6 +186,11 @@ int _tmain(int argc, _TCHAR* argv[])
 					window.setView(game_view);
 				}
 				break;
+			case sf::Event::MouseMoved:
+				sf::Vector2i pos = sf::Mouse::getPosition(window);
+				
+				board.setBrushPosition(sf::Vector2i(window.mapPixelToCoords(pos)));
+				break;
 			}
 		}
 		

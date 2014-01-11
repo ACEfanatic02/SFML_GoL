@@ -4,11 +4,45 @@ void GameBoardRenderer::draw(sf::RenderTarget& target, sf::RenderStates states) 
 {
 	states.texture = &m_tex;
 	target.draw(m_verts, states);
+	target.draw(m_brush_verts, states);
 }
 
 namespace {
 	const sf::Time SLOW_TIMEOUT = sf::milliseconds(300);
 	const sf::Time FAST_TIMEOUT = sf::milliseconds(100);
+}
+
+void GameBoardRenderer::updateBrush()
+{
+	const int b_width = m_brush->width;
+	const int b_height = m_brush->height;
+	for (int x = 0; x < b_width; ++x)
+	{
+		for (int y = 0; y < b_height; ++y)
+		{
+			sf::Vertex * quads = &m_brush_verts[(y * b_width + x) * 4];
+			
+			quads[0].position = sf::Vector2f(x * m_cellsize.x, y * m_cellsize.y) + sf::Vector2f(m_brush_pos);
+			quads[1].position = sf::Vector2f((x + 1) * m_cellsize.x, y * m_cellsize.y) + sf::Vector2f(m_brush_pos);
+			quads[2].position = sf::Vector2f((x + 1) * m_cellsize.x, (y + 1) * m_cellsize.y) + sf::Vector2f(m_brush_pos);
+			quads[3].position = sf::Vector2f(x * m_cellsize.x, (y + 1) * m_cellsize.y) + sf::Vector2f(m_brush_pos);
+
+			if (m_brush->brush[y * b_width + x])
+			{
+				quads[0].texCoords = sf::Vector2f(0.0f, 8.0f);
+				quads[1].texCoords = sf::Vector2f(8.0f, 8.0f);
+				quads[2].texCoords = sf::Vector2f(8.0f, 16.0f);
+				quads[3].texCoords = sf::Vector2f(0.0f, 16.0f);
+			}
+			else
+			{
+				quads[0].color = sf::Color::Transparent;
+				quads[1].color = sf::Color::Transparent;
+				quads[2].color = sf::Color::Transparent;
+				quads[3].color = sf::Color::Transparent;
+			}
+		}
+	}
 }
 
 bool GameBoardRenderer::checkUpdateTime(sf::Time elapsed)
@@ -58,6 +92,7 @@ void GameBoardRenderer::update(sf::Time elapsed)
 			quad[3].texCoords = sf::Vector2f(tu * m_cellsize.x, (tv + 1) * m_cellsize.y);	
 		}
 	}
+	updateBrush();
 }
 
 void GameBoardRenderer::clickCell(const sf::Vector2i& pos)
@@ -67,4 +102,12 @@ void GameBoardRenderer::clickCell(const sf::Vector2i& pos)
 	
 	int cur_state = m_board.cellAt(tile_x, tile_y);
 	m_board.setCell(tile_x, tile_y, (~cur_state) & 0x1); 
+}
+
+void GameBoardRenderer::setBrushPosition(const sf::Vector2i& pos)
+{
+	int tile_x = pos.x / m_cellsize.x;
+	int tile_y = pos.y / m_cellsize.y;
+
+	m_brush_pos = sf::Vector2i(tile_x * m_cellsize.x, tile_y * m_cellsize.y);
 }

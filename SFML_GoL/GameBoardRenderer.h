@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "GameBoard.h"
+#include "ToolBrush.h"
 
 enum GameSpeed
 {
@@ -20,11 +21,16 @@ private:
 	const sf::Texture& m_tex;
 	sf::VertexArray m_verts;
 
+	const ToolBrush * m_brush;
+	sf::Vector2i m_brush_pos;
+	sf::VertexArray m_brush_verts;
+
 	GameSpeed m_speed;
 	sf::Time m_time_since_update;
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	bool checkUpdateTime(sf::Time elapsed);
+	void updateBrush();
 
 public:
 	GameBoardRenderer(const sf::Vector2u& board_size, const sf::Vector2u& cellsize, const sf::Texture& texture) :
@@ -32,10 +38,13 @@ public:
 		m_cellsize(cellsize),
 		m_tex(texture),
 		m_verts(sf::Quads, board_size.x * board_size.y * 4),
-		m_speed(GameSpeed::SPEED_PAUSED)
+		m_speed(GameSpeed::SPEED_PAUSED),
+		m_brush(&ToolBrushes::GLIDER),
+		m_brush_pos(0, 0),
+		m_brush_verts(sf::VertexArray(sf::Quads, 4 * 3 * 3))
 	{
 	}
-
+	
 	~GameBoardRenderer()
 	{
 	}
@@ -43,5 +52,7 @@ public:
 	void update(const sf::Time elapsed);
 	void clickCell(const sf::Vector2i& pos);
 	void setSpeed(const GameSpeed speed) { m_speed = speed; }
+	void setBrush(const ToolBrush& brush) { m_brush = &brush; }
+	void setBrushPosition(const sf::Vector2i& pos);
 };
 

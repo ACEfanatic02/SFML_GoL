@@ -91,7 +91,6 @@ GameBoard::CellState GameBoard::cellAt(int x, int y) const
 	if (checkBounds(x, y)) {
 		return m_cells[y * m_width + x];
 	}
-	// TODO: there are other options here -- we can wrap the board, with cells on one edge neighboring their opposites.
 	return CELL_DEAD;
 }
 
