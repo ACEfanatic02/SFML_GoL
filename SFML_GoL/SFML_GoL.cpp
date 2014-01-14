@@ -175,12 +175,24 @@ int _tmain(int argc, _TCHAR* argv[])
 				case sf::Keyboard::Num2:
 					board.setSpeed(GameSpeed::SPEED_FAST);
 					break;
+
+				// Switch brush:
+				case sf::Keyboard::Numpad0:
+					board.setBrush(ToolBrushes::SINGLE_CELL);
+					break;
+				case sf::Keyboard::Numpad1:
+					board.setBrush(ToolBrushes::BLOCK);
+					break;
+				case sf::Keyboard::Numpad2:
+					board.setBrush(ToolBrushes::GLIDER);
+					break;
 				}
 				break;
 			case sf::Event::MouseButtonPressed:
 				click = sf::Vector2i(event.mouseButton.x, event.mouseButton.y);
 				if (event.mouseButton.button == sf::Mouse::Button::Left) { 
-					board.clickCell(sf::Vector2i(window.mapPixelToCoords(click)));
+					//board.clickCell(sf::Vector2i(window.mapPixelToCoords(click)));
+					board.stampBrush();
 				} else if (event.mouseButton.button == sf::Mouse::Button::Right) {
 					game_view.setCenter(sf::Vector2f(click));
 					window.setView(game_view);

@@ -30,6 +30,7 @@ private:
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	bool checkUpdateTime(sf::Time elapsed);
+	void clearBrushVerts();
 	void updateBrush();
 
 public:
@@ -39,7 +40,7 @@ public:
 		m_tex(texture),
 		m_verts(sf::Quads, board_size.x * board_size.y * 4),
 		m_speed(GameSpeed::SPEED_PAUSED),
-		m_brush(&ToolBrushes::GLIDER),
+		m_brush(&ToolBrushes::SINGLE_CELL),
 		m_brush_pos(0, 0),
 		m_brush_verts(sf::VertexArray(sf::Quads, 4 * 3 * 3))
 	{
@@ -50,9 +51,9 @@ public:
 	}
 
 	void update(const sf::Time elapsed);
-	void clickCell(const sf::Vector2i& pos);
+	void stampBrush();
 	void setSpeed(const GameSpeed speed) { m_speed = speed; }
-	void setBrush(const ToolBrush& brush) { m_brush = &brush; }
+	void setBrush(const ToolBrush& brush) { m_brush = &brush; clearBrushVerts(); }
 	void setBrushPosition(const sf::Vector2i& pos);
 };
 

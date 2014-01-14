@@ -45,6 +45,11 @@ void GameBoardRenderer::updateBrush()
 	}
 }
 
+void GameBoardRenderer::clearBrushVerts()
+{
+	m_brush_verts = sf::VertexArray(sf::Quads, m_brush->height * m_brush->width * 4);
+}
+
 bool GameBoardRenderer::checkUpdateTime(sf::Time elapsed)
 {
 	m_time_since_update += elapsed;
@@ -95,17 +100,27 @@ void GameBoardRenderer::update(sf::Time elapsed)
 	updateBrush();
 }
 
-void GameBoardRenderer::clickCell(const sf::Vector2i& pos)
+void GameBoardRenderer::stampBrush()
 {
-	int tile_x = pos.x / m_cellsize.x;
-	int tile_y = pos.y / m_cellsize.y;
-	
-	int cur_state = m_board.cellAt(tile_x, tile_y);
-	m_board.setCell(tile_x, tile_y, (~cur_state) & 0x1); 
+	int brush_w = m_brush->width;
+	int brush_h = m_brush->height;
+
+	sf::Vector2i brush_coords = sf::Vector2i(m_brush_pos.x / m_cellsize.x, m_brush_pos.y / m_cellsize.y);
+	for (int x = 0; x < brush_w; ++x)
+	{
+		for (int y = 0; y < brush_h; ++y)
+		{
+			if (m_brush->brush[y * brush_w + x] == 1)
+			{
+				m_board.setCell(brush_coords + sf::Vector2i(x, y), GameBoard::CELL_ALIVE);
+			}
+		}
+	}
 }
 
 void GameBoardRenderer::setBrushPosition(const sf::Vector2i& pos)
 {
+	// Snap the position to a multiple of cellsize before storing it.
 	int tile_x = pos.x / m_cellsize.x;
 	int tile_y = pos.y / m_cellsize.y;
 
