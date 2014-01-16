@@ -23,6 +23,7 @@ private:
 	const ToolBrush * m_brush;
 	sf::Vector2i m_brush_pos;
 	sf::VertexArray m_brush_verts;
+	int m_brush_rot;
 
 	GameSpeed m_speed;
 	sf::Time m_time_since_update;
@@ -54,7 +55,8 @@ public:
 	void stamp();
 	void erase();
 	void setSpeed(const GameSpeed speed) { m_speed = speed; }
-	void setBrush(const ToolBrush& brush) { m_brush = &brush; clearBrushVerts(); }
+	void setBrush(const ToolBrush& brush) { m_brush = &brush; m_brush_rot = 0; clearBrushVerts(); }
 	void setBrushPosition(const sf::Vector2i& pos);
+	void rotateBrush() { m_brush_rot++; clearBrushVerts(); }
 };
 

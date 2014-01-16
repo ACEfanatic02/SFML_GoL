@@ -187,6 +187,11 @@ int _tmain(int argc, _TCHAR* argv[])
 				case sf::Keyboard::Numpad2:
 					board.setBrush(ToolBrushes::GLIDER);
 					break;
+
+				// Rotate brush;
+				case sf::Keyboard::R:
+					board.rotateBrush();
+					break;
 				}
 				break;
 			case sf::Event::MouseButtonPressed:
@@ -209,7 +214,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		window.clear(sf::Color::Blue);
 		window.draw(board);
-		window.draw(psys);
+//		window.draw(psys);
 		window.display();
 		sf::sleep(sf::milliseconds(50) - elapsed);
 	}

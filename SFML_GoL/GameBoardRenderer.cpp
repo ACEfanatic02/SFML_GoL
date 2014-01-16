@@ -34,6 +34,8 @@ void GameBoardRenderer::updateBrush()
 {
 	const int b_width = m_brush->width;
 	const int b_height = m_brush->height;
+	const sf::Uint8 * pbrush = ToolBrushes::getBrushRotation(m_brush, m_brush_rot);
+
 	for (int x = 0; x < b_width; ++x)
 	{
 		for (int y = 0; y < b_height; ++y)
@@ -45,7 +47,7 @@ void GameBoardRenderer::updateBrush()
 			quads[2].position = sf::Vector2f((x + 1) * m_cellsize.x, (y + 1) * m_cellsize.y) + sf::Vector2f(m_brush_pos);
 			quads[3].position = sf::Vector2f(x * m_cellsize.x, (y + 1) * m_cellsize.y) + sf::Vector2f(m_brush_pos);
 
-			if (m_brush->brush[y * b_width + x])
+			if (pbrush[y * b_width + x])
 			{
 				quads[0].texCoords = sf::Vector2f(0.0f, 8.0f);
 				quads[1].texCoords = sf::Vector2f(8.0f, 8.0f);
@@ -104,13 +106,14 @@ void GameBoardRenderer::stampBrush(GameBoard::CellState state)
 {
 	int brush_w = m_brush->width;
 	int brush_h = m_brush->height;
+	const sf::Uint8 * pbrush = ToolBrushes::getBrushRotation(m_brush, m_brush_rot);
 
 	sf::Vector2i brush_coords = sf::Vector2i(m_brush_pos.x / m_cellsize.x, m_brush_pos.y / m_cellsize.y);
 	for (int x = 0; x < brush_w; ++x)
 	{
 		for (int y = 0; y < brush_h; ++y)
 		{
-			if (m_brush->brush[y * brush_w + x] == 1)
+			if (pbrush[y * brush_w + x] == 1)
 			{
 				m_board.setCell(brush_coords + sf::Vector2i(x, y), state);
 			}
