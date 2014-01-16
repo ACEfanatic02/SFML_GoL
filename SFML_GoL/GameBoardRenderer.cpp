@@ -118,6 +118,24 @@ void GameBoardRenderer::stampBrush()
 	}
 }
 
+void GameBoardRenderer::eraseBrush()
+{
+	int brush_w = m_brush->width;
+	int brush_h = m_brush->height;
+
+	sf::Vector2i brush_coords = sf::Vector2i(m_brush_pos.x / m_cellsize.x, m_brush_pos.y / m_cellsize.y);
+	for (int x = 0; x < brush_w; ++x)
+	{
+		for (int y = 0; y < brush_h; ++y)
+		{
+			if (m_brush->brush[y * brush_w + x] == 1)
+			{
+				m_board.setCell(brush_coords + sf::Vector2i(x, y), GameBoard::CELL_DEAD);
+			}
+		}
+	}
+}
+
 void GameBoardRenderer::setBrushPosition(const sf::Vector2i& pos)
 {
 	// Snap the position to a multiple of cellsize before storing it.

@@ -15,7 +15,6 @@ enum GameSpeed
 class GameBoardRenderer : public sf::Drawable
 {
 private:
-	
 	GameBoard m_board;
 	const sf::Vector2u m_cellsize;
 	const sf::Texture& m_tex;
@@ -52,6 +51,7 @@ public:
 
 	void update(const sf::Time elapsed);
 	void stampBrush();
+	void eraseBrush();
 	void setSpeed(const GameSpeed speed) { m_speed = speed; }
 	void setBrush(const ToolBrush& brush) { m_brush = &brush; clearBrushVerts(); }
 	void setBrushPosition(const sf::Vector2i& pos);

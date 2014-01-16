@@ -142,9 +142,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	sf::Clock clock;
 	sf::Vector2i click;
 
-	sf::View game_view(sf::Vector2f(400, 300), sf::Vector2f(800, 600));
-	game_view.setViewport(sf::FloatRect(0, 0, 1, 0.75));
+	sf::View game_view(sf::Vector2f(400, 400), sf::Vector2f(800, 800));
+	game_view.setViewport(sf::FloatRect(0, 0, 1, 1));
 	window.setView(game_view);
+	window.setMouseCursorVisible(false);
 
 	while (window.isOpen())
 	{
@@ -161,7 +162,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				{
 				// Re-center view
 				case sf::Keyboard::C:
-					game_view.setCenter(sf::Vector2f(400, 300));
+					game_view.setCenter(sf::Vector2f(400, 400));
 					window.setView(game_view);
 					break;
 
@@ -191,16 +192,15 @@ int _tmain(int argc, _TCHAR* argv[])
 			case sf::Event::MouseButtonPressed:
 				click = sf::Vector2i(event.mouseButton.x, event.mouseButton.y);
 				if (event.mouseButton.button == sf::Mouse::Button::Left) { 
-					//board.clickCell(sf::Vector2i(window.mapPixelToCoords(click)));
 					board.stampBrush();
 				} else if (event.mouseButton.button == sf::Mouse::Button::Right) {
-					game_view.setCenter(sf::Vector2f(click));
-					window.setView(game_view);
+//					game_view.setCenter(sf::Vector2f(click));
+//					window.setView(game_view);
+					board.eraseBrush();
 				}
 				break;
 			case sf::Event::MouseMoved:
-				sf::Vector2i pos = sf::Mouse::getPosition(window);
-				
+				sf::Vector2i pos = sf::Mouse::getPosition(window);		
 				board.setBrushPosition(sf::Vector2i(window.mapPixelToCoords(pos)));
 				break;
 			}
