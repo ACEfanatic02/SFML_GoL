@@ -12,6 +12,24 @@ namespace {
 	const sf::Time FAST_TIMEOUT = sf::milliseconds(100);
 }
 
+bool GameBoardRenderer::checkUpdateTime(sf::Time elapsed)
+{
+	m_time_since_update += elapsed;
+	if (m_speed == GameSpeed::SPEED_SLOW &&
+		m_time_since_update >= SLOW_TIMEOUT)
+	{
+		m_time_since_update = sf::Time::Zero;
+		return true;
+	}
+	else if (m_speed == GameSpeed::SPEED_FAST &&
+		m_time_since_update >= FAST_TIMEOUT)
+	{
+		m_time_since_update = sf::Time::Zero;
+		return true;
+	}
+	return false;
+}
+
 void GameBoardRenderer::updateBrush()
 {
 	const int b_width = m_brush->width;
@@ -50,24 +68,6 @@ void GameBoardRenderer::clearBrushVerts()
 	m_brush_verts = sf::VertexArray(sf::Quads, m_brush->height * m_brush->width * 4);
 }
 
-bool GameBoardRenderer::checkUpdateTime(sf::Time elapsed)
-{
-	m_time_since_update += elapsed;
-	if (m_speed == GameSpeed::SPEED_SLOW &&
-		m_time_since_update >= SLOW_TIMEOUT)
-	{
-		m_time_since_update = sf::Time::Zero;
-		return true;
-	}
-	else if (m_speed == GameSpeed::SPEED_FAST &&
-		m_time_since_update >= FAST_TIMEOUT)
-	{
-		m_time_since_update = sf::Time::Zero;
-		return true;
-	}
-	return false;
-}
-
 void GameBoardRenderer::update(sf::Time elapsed)
 {
 	if (m_speed != GameSpeed::SPEED_PAUSED && checkUpdateTime(elapsed))
@@ -100,7 +100,7 @@ void GameBoardRenderer::update(sf::Time elapsed)
 	updateBrush();
 }
 
-void GameBoardRenderer::stampBrush()
+void GameBoardRenderer::stampBrush(GameBoard::CellState state)
 {
 	int brush_w = m_brush->width;
 	int brush_h = m_brush->height;
@@ -112,28 +112,20 @@ void GameBoardRenderer::stampBrush()
 		{
 			if (m_brush->brush[y * brush_w + x] == 1)
 			{
-				m_board.setCell(brush_coords + sf::Vector2i(x, y), GameBoard::CELL_ALIVE);
+				m_board.setCell(brush_coords + sf::Vector2i(x, y), state);
 			}
 		}
 	}
 }
 
-void GameBoardRenderer::eraseBrush()
+void GameBoardRenderer::stamp()
 {
-	int brush_w = m_brush->width;
-	int brush_h = m_brush->height;
+	stampBrush(GameBoard::CELL_ALIVE);
+}
 
-	sf::Vector2i brush_coords = sf::Vector2i(m_brush_pos.x / m_cellsize.x, m_brush_pos.y / m_cellsize.y);
-	for (int x = 0; x < brush_w; ++x)
-	{
-		for (int y = 0; y < brush_h; ++y)
-		{
-			if (m_brush->brush[y * brush_w + x] == 1)
-			{
-				m_board.setCell(brush_coords + sf::Vector2i(x, y), GameBoard::CELL_DEAD);
-			}
-		}
-	}
+void GameBoardRenderer::erase()
+{
+	stampBrush(GameBoard::CELL_DEAD);
 }
 
 void GameBoardRenderer::setBrushPosition(const sf::Vector2i& pos)

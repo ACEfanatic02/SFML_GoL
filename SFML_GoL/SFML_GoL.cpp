@@ -190,13 +190,10 @@ int _tmain(int argc, _TCHAR* argv[])
 				}
 				break;
 			case sf::Event::MouseButtonPressed:
-				click = sf::Vector2i(event.mouseButton.x, event.mouseButton.y);
 				if (event.mouseButton.button == sf::Mouse::Button::Left) { 
-					board.stampBrush();
+					board.stamp();
 				} else if (event.mouseButton.button == sf::Mouse::Button::Right) {
-//					game_view.setCenter(sf::Vector2f(click));
-//					window.setView(game_view);
-					board.eraseBrush();
+					board.erase();
 				}
 				break;
 			case sf::Event::MouseMoved:

@@ -31,6 +31,7 @@ private:
 	bool checkUpdateTime(sf::Time elapsed);
 	void clearBrushVerts();
 	void updateBrush();
+	void stampBrush(GameBoard::CellState state);
 
 public:
 	GameBoardRenderer(const sf::Vector2u& board_size, const sf::Vector2u& cellsize, const sf::Texture& texture) :
@@ -50,8 +51,8 @@ public:
 	}
 
 	void update(const sf::Time elapsed);
-	void stampBrush();
-	void eraseBrush();
+	void stamp();
+	void erase();
 	void setSpeed(const GameSpeed speed) { m_speed = speed; }
 	void setBrush(const ToolBrush& brush) { m_brush = &brush; clearBrushVerts(); }
 	void setBrushPosition(const sf::Vector2i& pos);
