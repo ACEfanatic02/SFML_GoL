@@ -32,6 +32,31 @@ int _tmain(int argc, _TCHAR* argv[])
 	ToolBar toolbar(toolbar_tex);
 	toolbar.setPosition(0, 800);
 
+	toolbar.bindFunction(1, [&board]() {
+		board.setSpeed(GameSpeed::SPEED_PAUSED);
+	});
+	toolbar.bindFunction(2, [&board]() {
+		board.setSpeed(GameSpeed::SPEED_SLOW);
+	});
+	toolbar.bindFunction(3, [&board]() {
+		board.setSpeed(GameSpeed::SPEED_FAST);
+	});
+	toolbar.bindFunction(5, [&board]() {
+		board.rotateBrush();
+	});
+	toolbar.bindFunction(7, [&board]() {
+		board.setBrush(ToolBrushes::SINGLE_CELL);
+	});
+	toolbar.bindFunction(8, [&board]() {
+		board.setBrush(ToolBrushes::BLOCK);
+	});
+	toolbar.bindFunction(9, [&board]() {
+		board.setBrush(ToolBrushes::GLIDER);
+	});
+	toolbar.bindFunction(10, [&board]() {
+		board.setBrush(ToolBrushes::BLINKER);
+	});
+
 	sf::Clock clock;
 	sf::Vector2i click;
 

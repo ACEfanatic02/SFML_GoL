@@ -32,22 +32,22 @@ bool GameBoardRenderer::checkUpdateTime(sf::Time elapsed)
 
 void GameBoardRenderer::updateBrush()
 {
-	const int b_width = m_brush->width;
-	const int b_height = m_brush->height;
+	const int brush_w = m_brush->width;
+	const int brush_h = m_brush->height;
 	const sf::Uint8 * pbrush = ToolBrushes::getBrushRotation(m_brush, m_brush_rot);
 
-	for (int x = 0; x < b_width; ++x)
+	for (int x = 0; x < brush_w; ++x)
 	{
-		for (int y = 0; y < b_height; ++y)
+		for (int y = 0; y < brush_h; ++y)
 		{
-			sf::Vertex * quads = &m_brush_verts[(y * b_width + x) * 4];
+			sf::Vertex * quads = &m_brush_verts[(y * brush_w + x) * 4];
 			
 			quads[0].position = sf::Vector2f(x * m_cellsize.x, y * m_cellsize.y) + sf::Vector2f(m_brush_pos);
 			quads[1].position = sf::Vector2f((x + 1) * m_cellsize.x, y * m_cellsize.y) + sf::Vector2f(m_brush_pos);
 			quads[2].position = sf::Vector2f((x + 1) * m_cellsize.x, (y + 1) * m_cellsize.y) + sf::Vector2f(m_brush_pos);
 			quads[3].position = sf::Vector2f(x * m_cellsize.x, (y + 1) * m_cellsize.y) + sf::Vector2f(m_brush_pos);
 
-			if (pbrush[y * b_width + x])
+			if (pbrush[y * brush_w + x])
 			{
 				quads[0].texCoords = sf::Vector2f(0.0f, 8.0f);
 				quads[1].texCoords = sf::Vector2f(8.0f, 8.0f);
