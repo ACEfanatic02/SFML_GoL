@@ -187,6 +187,9 @@ int _tmain(int argc, _TCHAR* argv[])
 				case sf::Keyboard::Numpad2:
 					board.setBrush(ToolBrushes::GLIDER);
 					break;
+				case sf::Keyboard::Numpad3:
+					board.setBrush(ToolBrushes::BLINKER);
+					break;
 
 				// Rotate brush;
 				case sf::Keyboard::R:

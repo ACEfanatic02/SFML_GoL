@@ -47,6 +47,19 @@ namespace ToolBrushes {
 			1, 1, 0,
 		}
 	};
+	const ToolBrush BLINKER = {
+		3, 3,
+		2,
+		{
+			0, 1, 0,
+			0, 1, 0,
+			0, 1, 0,
+
+			0, 0, 0,
+			1, 1, 1,
+			0, 0, 0,
+		}
+	};
 
 	inline const sf::Uint8 * getBrushRotation(const ToolBrush * brush, const int rotation) 
 	{
