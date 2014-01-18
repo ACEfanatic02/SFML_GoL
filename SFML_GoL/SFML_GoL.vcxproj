@@ -88,18 +88,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameBoard.h" />
-    <ClInclude Include="GameBoardRenderer.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ToolBar.h" />
     <ClInclude Include="ToolBrush.h" />
+    <ClInclude Include="ToolBrushRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameBoard.cpp" />
-    <ClCompile Include="GameBoardRenderer.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="SFML_GoL.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="ToolBar.cpp" />
+    <ClCompile Include="ToolBrushRenderer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -6,7 +6,7 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "GameBoardRenderer.h"
+#include "GameState.h"
 #include "ToolBar.h"
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -28,7 +28,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		return 1;
 	}
 	
-	GameBoardRenderer board(sf::Vector2u(100, 100), sf::Vector2u(8, 8), tiles);
+	GameState board(sf::Vector2u(100, 100), sf::Vector2u(8, 8), tiles);
 	ToolBar toolbar(toolbar_tex);
 	toolbar.setPosition(0, 800);
 
