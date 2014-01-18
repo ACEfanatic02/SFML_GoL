@@ -33,7 +33,7 @@ private:
 	ToolBarButtons m_buttons[NUM_BUTTONS];
 	ToolBarButtonState m_button_state[NUM_BUTTONS];
 	std::function<void()> m_button_functions[NUM_BUTTONS];
-	int m_selected;
+	int m_highlighted;
 
 	sf::VertexArray m_verts;
 	const sf::Texture& m_tex;
@@ -42,7 +42,7 @@ private:
 
 public:
 	ToolBar(const sf::Texture& texture) :
-		m_selected(-1),
+		m_highlighted(-1),
 		m_verts(sf::Quads, 25 * 4),
 		m_tex(texture)
 	{
@@ -63,6 +63,9 @@ public:
 		m_buttons[8] = ToolBarButtons::BRUSH_BLOCK;
 		m_buttons[9] = ToolBarButtons::BRUSH_GLIDER;
 		m_buttons[10] = ToolBarButtons::BRUSH_BLINKER;
+
+		m_button_state[1] = ToolBarButtonState::ON;
+		m_button_state[7] = ToolBarButtonState::ON;
 	}
 
 	~ToolBar()
@@ -75,6 +78,6 @@ public:
 
 	void bindFunction(const int button, const std::function<void()> func) { m_button_functions[button] = func; }
 
-	void clearSelection() { m_selected = -1; }
+	void clearSelection() { m_highlighted = -1; }
 };
 

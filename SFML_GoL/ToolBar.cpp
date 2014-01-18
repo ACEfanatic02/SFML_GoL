@@ -18,7 +18,7 @@ void ToolBar::update()
 		quad[3].position = sf::Vector2f(i * 32, 32);
 
 		int voffset = m_button_state[i] * 32;
-		if (m_selected == i) {
+		if (m_highlighted == i) {
 			voffset = 32 * 2; 
 		}
 		int type = m_buttons[i];
@@ -34,9 +34,26 @@ void ToolBar::click(const sf::Vector2i& pos)
 {
 	int button = pos.x / 32;
 	m_button_functions[button]();
+	if (button < 4) 
+	{
+		// Speed buttons
+		m_button_state[1] = ToolBarButtonState::OFF;
+		m_button_state[2] = ToolBarButtonState::OFF;
+		m_button_state[3] = ToolBarButtonState::OFF;
+		m_button_state[button] = ToolBarButtonState::ON;
+	}
+	else if (button >= 7)
+	{
+		// Brush buttons
+		m_button_state[7] = ToolBarButtonState::OFF;
+		m_button_state[8] = ToolBarButtonState::OFF;
+		m_button_state[9] = ToolBarButtonState::OFF;
+		m_button_state[10] = ToolBarButtonState::OFF;
+		m_button_state[button] = ToolBarButtonState::ON;
+	}
 }
 
 void ToolBar::mouseover(const sf::Vector2i& pos)
 {
-	m_selected = pos.x / 32;
+	m_highlighted = pos.x / 32;
 }
