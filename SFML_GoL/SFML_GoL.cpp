@@ -64,6 +64,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	game_view.setViewport(sf::FloatRect(0, 0, 1, 800.0 / 832.0));
 	window.setView(game_view);
 	window.setMouseCursorVisible(false);
+	window.setFramerateLimit(60);
 
 	while (window.isOpen())
 	{
@@ -132,15 +133,28 @@ int _tmain(int argc, _TCHAR* argv[])
 				sf::Vector2i pos = sf::Mouse::getPosition(window);
 				if (pos.y >= 800) {
 					toolbar.mouseover(pos - sf::Vector2i(0, 800));
+					window.setMouseCursorVisible(true);
+					board.setBrushVisible(false);
 				}
 				else {
+					window.setMouseCursorVisible(false);
 					toolbar.clearSelection();
 					board.setBrushPosition(sf::Vector2i(window.mapPixelToCoords(pos)));
+					board.setBrushVisible(true);
 				}
 				break;
 			}
 		}
 		
+		{
+			// Do not show brush if cursor is outside our window.
+			sf::FloatRect window_bounds(sf::Vector2f(window.getPosition()), sf::Vector2f(window.getSize()));
+			if (!window_bounds.contains(sf::Vector2f(sf::Mouse::getPosition())))
+			{
+				board.setBrushVisible(false);
+			}
+		}
+
 		sf::Time elapsed = clock.restart();
 		board.update(elapsed);
 		toolbar.update();
@@ -151,7 +165,6 @@ int _tmain(int argc, _TCHAR* argv[])
 		window.draw(toolbar);
 		window.setView(game_view);
 		window.display();
-		sf::sleep(sf::milliseconds(50) - elapsed);
 	}
 	return 0;
 }

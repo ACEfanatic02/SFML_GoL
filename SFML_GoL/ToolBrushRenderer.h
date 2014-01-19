@@ -12,6 +12,7 @@ private:
 	sf::VertexArray m_verts;
 
 	int m_rotation;
+	bool m_visible;
 
 	void clearVerts() { m_verts = sf::VertexArray(sf::Quads, 4 * m_brush->width * m_brush->height); } 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates state) const;
@@ -38,7 +39,14 @@ public:
 	}
 	void rotateBrush() 
 	{ 
-		m_rotation++; clearVerts(); 
+		m_rotation++; 
+		clearVerts(); 
+	}
+
+	void setVisible(bool visible) 
+	{ 
+		m_visible = visible;
+		clearVerts();
 	}
 
 	int getWidth() const { return m_brush->width; }

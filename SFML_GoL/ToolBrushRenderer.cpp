@@ -13,6 +13,8 @@ void ToolBrushRenderer::update()
 	const int brush_h = m_brush->height;
 	const sf::Uint8 * pbrush = ToolBrushes::getBrushRotation(m_brush, m_rotation);
 
+	if (!m_visible) return;
+
 	for (int x = 0; x < brush_w; ++x)
 	{
 		for (int y = 0; y < brush_h; ++y)

@@ -53,6 +53,7 @@ public:
 	void erase();
 	void setSpeed(const GameSpeed speed) { m_speed = speed; }
 	void setBrush(const ToolBrush& brush) { m_toolbrush.setBrush(brush); }
+	void setBrushVisible(bool visible) { m_toolbrush.setVisible(visible); }
 	void setBrushPosition(const sf::Vector2i& pos);
 	void rotateBrush() { m_toolbrush.rotateBrush(); }
 };
