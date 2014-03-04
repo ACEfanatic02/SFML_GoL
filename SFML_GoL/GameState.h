@@ -48,13 +48,21 @@ public:
 	{
 	}
 
+	// Update the game by given elapsed time.
 	void update(const sf::Time elapsed);
+	// Stamp brush to board with live cells.
 	void stamp();
+	// Stamp brush to board with dead cells.
 	void erase();
+	// Set game speed.
 	void setSpeed(const GameSpeed speed) { m_speed = speed; }
+	// Set current active brush.
 	void setBrush(const ToolBrush& brush) { m_toolbrush.setBrush(brush); }
+	// Set brush visibility.
 	void setBrushVisible(bool visible) { m_toolbrush.setVisible(visible); }
+	// Set brush position (pixel coordinates, relative to upper-left of game board).
 	void setBrushPosition(const sf::Vector2i& pos);
+	// Rotate brush.
 	void rotateBrush() { m_toolbrush.rotateBrush(); }
 };
 

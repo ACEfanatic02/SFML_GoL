@@ -9,7 +9,7 @@ enum ToolBarButtonState
 	ON,
 };
 
-enum ToolBarButtons
+enum ToolBarButtons  // Offsets within texture
 {
 	FILLER = 0,
 	PAUSE,
@@ -33,7 +33,7 @@ private:
 	ToolBarButtons m_buttons[NUM_BUTTONS];
 	ToolBarButtonState m_button_state[NUM_BUTTONS];
 	std::function<void()> m_button_functions[NUM_BUTTONS];
-	int m_highlighted;
+	int m_highlighted;  // Index of currently highlighted button.
 
 	sf::VertexArray m_verts;
 	const sf::Texture& m_tex;
@@ -50,7 +50,8 @@ public:
 		{
 			m_buttons[i] = ToolBarButtons::FILLER;
 			m_button_state[i] = ToolBarButtonState::OFF;
-			m_button_functions[i] = []() {};
+			// We need *some* default function for unused buttons, or we'll segfault when the user clicks on them:
+			m_button_functions[i] = []() {};  
 		}
 
 		m_buttons[1] = ToolBarButtons::PAUSE;
@@ -72,12 +73,15 @@ public:
 	{
 	}
 
+	// Update the toolbar (graphically).
 	void update();
+	// Alert toolbar to a click at given position, relative to upper-left of toolbar.
 	void click(const sf::Vector2i& pos);
+	// Alert toolbar to a mouseover at given position, relative to upper-left of toolbar.
 	void mouseover(const sf::Vector2i& pos);
-
+	// Bind a callback function for given button index.
 	void bindFunction(const int button, const std::function<void()> func) { m_button_functions[button] = func; }
-
+	// Clear current mouseover selection.
 	void clearSelection() { m_highlighted = -1; }
 };
 

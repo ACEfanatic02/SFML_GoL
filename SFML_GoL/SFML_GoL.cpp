@@ -1,6 +1,3 @@
-// SFML_GoL.cpp : コンソール アプリケーションのエントリ ポイントを定義します。
-//
-
 #include "stdafx.h"
 
 #include <SFML/System.hpp>
@@ -12,6 +9,7 @@
 int _tmain(int argc, _TCHAR* argv[])
 {
 #ifdef DEBUG
+	// Heap checks for debug mode.
 	_CrtSetDbgFlag(_CRTDBG_CHECK_ALWAYS_DF);
 #endif
 
@@ -32,6 +30,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	ToolBar toolbar(toolbar_tex);
 	toolbar.setPosition(0, 800);
 
+	// Set up callbacks for toolbar functions.
 	toolbar.bindFunction(1, [&board]() {
 		board.setSpeed(GameSpeed::SPEED_PAUSED);
 	});

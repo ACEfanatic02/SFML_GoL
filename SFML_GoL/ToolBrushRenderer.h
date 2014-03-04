@@ -30,7 +30,10 @@ public:
 	{
 	}
 
+	// Update toolbrush graphics.
 	void update();
+
+	// Change brush to given brush.
 	void setBrush(const ToolBrush& brush) 
 	{ 
 		m_brush = &brush;
@@ -42,7 +45,7 @@ public:
 		m_rotation++; 
 		clearVerts(); 
 	}
-
+	// Set the brush as visible or invisible.
 	void setVisible(bool visible) 
 	{ 
 		m_visible = visible;
@@ -52,6 +55,7 @@ public:
 	int getWidth() const { return m_brush->width; }
 	int getHeight() const { return m_brush->height; }
 
+	// Get the brush tile at (x, y), taking brush rotation into account.
 	sf::Uint8 cellAt(int x, int y) const;
 };
 
